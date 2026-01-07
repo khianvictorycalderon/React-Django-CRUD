@@ -68,11 +68,12 @@ export default function App() {
   const [addItemFeedback, setAddItemFeedback] = useState<FeedbackProps>({
     message: "",
     type: "success"
-  })
+  });
   const handleOnAddItem = (e: FormEvent<HTMLFormElement>) => {
     
     // Prevent refresh
     e.preventDefault();
+    setAddItemFeedback({ message: "" }); // Remove any feedback first
 
     if (
       !first_name.current?.value ||
