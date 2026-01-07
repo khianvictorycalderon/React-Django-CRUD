@@ -145,7 +145,7 @@ export default function App() {
             <Input 
               type="number"
               label="Age"
-              id="last-name-add-input"
+              id="age-add-input"
               ref={age}
             />
 
