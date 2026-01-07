@@ -37,6 +37,18 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
   }
 );
 
+interface ErrorLabelProps {
+  children: React.ReactNode | string;
+}
+
+const ErrorLabel = ({
+  children
+}: ErrorLabelProps) => (
+  <p className="text-red-400 font-semibold text-center">
+    {children || ""}
+  </p>
+);
+
 export default function App() {
 
   const first_name = useRef<HTMLInputElement>(null);
@@ -106,6 +118,8 @@ export default function App() {
               id="last-name-add-input"
               ref={age}
             />
+
+            {addItemErrorMessage && <ErrorLabel>{addItemErrorMessage}</ErrorLabel>}
 
             <button type="submit" className="bg-blue-600 w-full px-4 py-2 text-white rounded-md font-semibold cursor-pointer transition duration-300 hover:bg-blue-500">Add</button>
 
