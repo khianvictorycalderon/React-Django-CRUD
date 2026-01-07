@@ -6,6 +6,9 @@ A simple CRUD application demonstrating how to connect a React frontend with a D
 - **Backend:** Django + ORM + REST Framework
 - **Database:** SQLite
 
+## Preview
+![React + Django CRUD Preview](preview.png)
+
 ## Setup
 1. Clone this repository via `git clone https://github.com/khianvictorycalderon/React-Django-CRUD.git`
 2. Then create 2 separate terminal for both `frontend` and `backend` folder.
