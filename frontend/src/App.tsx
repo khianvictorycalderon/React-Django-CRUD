@@ -189,7 +189,7 @@ export default function App() {
 
   const handleSaveEdit = async (userId: number) => {
     try {
-      await axios.patch(`${ENV.VITE_API_URL}/api/user/${userId}/`, editingValues);
+      await axios.patch(`${ENV.VITE_API_URL}/api/user/${userId}/update/`, editingValues);
       setEditingUserId(null); // exit edit mode
       await fetchUsers(); // refresh users
     } catch (e: unknown) {
@@ -205,7 +205,7 @@ export default function App() {
     setDeleteUserFeedbackMessage(prev => ({ ...prev, [id]: { message: "Deleting..." } }));
 
     try {
-      await axios.delete(`${ENV.VITE_API_URL}/api/user/${id}`);
+      await axios.delete(`${ENV.VITE_API_URL}/api/user/${id}/delete`);
 
       setDeleteUserFeedbackMessage(prev => ({ ...prev, [id]: { message: "" } }));
 
