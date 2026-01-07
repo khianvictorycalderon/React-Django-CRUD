@@ -72,6 +72,8 @@ export default function App() {
               id="last-name-add-input"
             />
 
+            <button type="submit" className="bg-blue-600 w-full px-4 py-2 text-white rounded-md font-semibold cursor-pointer transition duration-300 hover:bg-blue-500">Add</button>
+
           </form>
 
         </div>
