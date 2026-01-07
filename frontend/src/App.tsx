@@ -56,7 +56,7 @@ const FeedbackLabel: React.FC<FeedbackProps> = ({ message, type = "success"}) =>
   if (!message) return null;
 
   return (
-    <p className={`${messageTypes[type]} text-center font-semibold`}>
+    <p className={`${messageTypes[type] || "text-black"} text-center font-semibold`}>
       {message}
     </p>
   );
@@ -72,11 +72,11 @@ export default function App() {
     message: "",
     type: "success"
   });
-  const handleOnAddItem = (e: FormEvent<HTMLFormElement>) => {
+  const handleOnAddItem = async (e: FormEvent<HTMLFormElement>) => {
     
     // Prevent refresh
     e.preventDefault();
-    setAddItemFeedback({ message: "" }); // Remove any feedback first
+    setAddItemFeedback({ message: "Adding..." }); // Remove any feedback first
 
     if (
       !first_name.current?.value ||
@@ -94,10 +94,10 @@ export default function App() {
     try {
 
       // Tries to send to Django Backend
-      axios.post(`${ENV.VITE_API_URL}/api/user`, { 
-        first_name, 
-        last_name,
-        age 
+      await axios.post(`${ENV.VITE_API_URL}/api/user`, { 
+        first_name: first_name.current?.value, 
+        last_name: last_name.current?.value,
+        age: age.current?.value 
       });
 
       // If item was successfully added, clears input
