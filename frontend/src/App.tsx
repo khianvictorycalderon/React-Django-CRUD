@@ -37,25 +37,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
   }
 );
 
-interface ErrorLabelProps {
-  children: React.ReactNode | string;
-}
-
-const ErrorLabel = ({
-  children
-}: ErrorLabelProps) => (
-  <p className="text-red-400 font-semibold text-center">
-    {children || ""}
-  </p>
-);
-
 export default function App() {
 
   const first_name = useRef<HTMLInputElement>(null);
   const last_name = useRef<HTMLInputElement>(null);
   const age = useRef<HTMLInputElement>(null);
-
-  const [addItemErrorMessage, setAddItemErrorMessage] = useState<string>("");
 
   const handleOnAddItem = (e: FormEvent<HTMLFormElement>) => {
     
@@ -82,7 +68,7 @@ export default function App() {
       alert("Successfully added!");
 
     } catch (e: unknown) {
-      setAddItemErrorMessage(`${e instanceof Error ? e.message : String(e)}`);
+      
     }
 
   }
@@ -118,8 +104,6 @@ export default function App() {
               id="last-name-add-input"
               ref={age}
             />
-
-            {addItemErrorMessage && <ErrorLabel>{addItemErrorMessage}</ErrorLabel>}
 
             <button type="submit" className="bg-blue-600 w-full px-4 py-2 text-white rounded-md font-semibold cursor-pointer transition duration-300 hover:bg-blue-500">Add</button>
 
