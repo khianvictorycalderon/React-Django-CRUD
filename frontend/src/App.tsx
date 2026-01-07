@@ -1,7 +1,13 @@
 export default function App() {
   return (
-    <h1 className="font-bold text-4xl">
-      React + Django CRUD Project
-    </h1>
+    <div className="min-h-screen flex items-center justify-center">
+      
+      <div>
+        <h2 className="text-4xl font-semibold">React + Django CRUD</h2>
+        <hr className="my-4" />
+
+      </div>
+
+    </div>
   )
 }
