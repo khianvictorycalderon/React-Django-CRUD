@@ -82,7 +82,7 @@ export default function App() {
       alert("Successfully added!");
 
     } catch (e: unknown) {
-
+      setAddItemErrorMessage(`${e instanceof Error ? e.message : String(e)}`);
     }
 
   }
