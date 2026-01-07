@@ -59,6 +59,43 @@ def users_list(request):
     }, status = 405)
 
 @csrf_exempt
+def user_update(request, user_id: int):
+    if request.method not in ["PATCH", "PUT"]:
+        return JsonResponse({"message": "Method not allowed"}, status=405)
+
+    # Find user
+    try:
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        return JsonResponse({"message": "User not found"}, status=404)
+
+    # Parse JSON body
+    try:
+        data = json.loads(request.body)
+    except json.JSONDecodeError:
+        return JsonResponse({"message": "Invalid JSON"}, status=400)
+
+    # Update fields if they exist
+    if "first_name" in data:
+        user.first_name = data["first_name"]
+    if "last_name" in data:
+        user.last_name = data["last_name"]
+    if "age" in data:
+        user.age = data["age"]
+
+    user.save()
+
+    return JsonResponse({
+        "message": "User updated successfully",
+        "user": {
+            "id": user.id,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "age": user.age
+        }
+    })
+
+@csrf_exempt
 def user_delete(request, user_id: int):
     if request.method == "DELETE":
         try:
