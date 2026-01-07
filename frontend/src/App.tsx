@@ -164,9 +164,39 @@ export default function App() {
   },[]);
 
   // Update user
-  const handleOnUpdateUser = async(_id: string | number) => {
+  const [editingUserId, setEditingUserId] = useState<number | null>(null);
+  const [editingValues, setEditingValues] = useState<{ first_name: string; last_name: string; age: number }>({
+    first_name: "",
+    last_name: "",
+    age: 0
+  });
 
-  }
+  const handleEditClick = (user: UserType) => {
+    setEditingUserId(user.id);
+    setEditingValues({
+      first_name: user.first_name,
+      last_name: user.last_name,
+      age: user.age
+    });
+  };
+
+  const handleEditingChange = (field: keyof UserType, value: string) => {
+    setEditingValues(prev => ({
+      ...prev,
+      [field]: field === "age" ? Number(value) : value
+    }));
+  };
+
+  const handleSaveEdit = async (userId: number) => {
+    try {
+      await axios.patch(`${ENV.VITE_API_URL}/api/user/${userId}/`, editingValues);
+      setEditingUserId(null); // exit edit mode
+      await fetchUsers(); // refresh users
+    } catch (e: unknown) {
+      console.error(e);
+      // optionally show per-card feedback here
+    }
+  };
 
   // Delete user
   const [deleteUserFeedbackMessage, setDeleteUserFeedbackMessage] = useState<Record<number, FeedbackProps>>({});
@@ -241,30 +271,68 @@ export default function App() {
                     key={user.id}
                     className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300"
                   >
-                    <h3 className="text-lg font-semibold mb-2">
-                      {user.first_name} {user.last_name}
-                    </h3>
-                    <p className="text-gray-600 mb-1">Age: {user.age}</p>
+                    {editingUserId === user.id ? (
+                      <>
+                        <input
+                          type="text"
+                          value={editingValues.first_name}
+                          onChange={e => handleEditingChange("first_name", e.target.value)}
+                          className="w-full mb-2 p-2 border rounded"
+                        />
+                        <input
+                          type="text"
+                          value={editingValues.last_name}
+                          onChange={e => handleEditingChange("last_name", e.target.value)}
+                          className="w-full mb-2 p-2 border rounded"
+                        />
+                        <input
+                          type="number"
+                          value={editingValues.age}
+                          onChange={e => handleEditingChange("age", e.target.value)}
+                          className="w-full mb-2 p-2 border rounded"
+                        />
+                        <div className="flex gap-2 mt-2">
+                          <button
+                            onClick={() => handleSaveEdit(user.id)}
+                            className="px-4 py-2 bg-green-600 text-white rounded-md"
+                          >
+                            Save
+                          </button>
+                          <button
+                            onClick={() => setEditingUserId(null)}
+                            className="px-4 py-2 bg-gray-500 text-white rounded-md"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <h3 className="text-lg font-semibold mb-2">{user.first_name} {user.last_name}</h3>
+                        <p className="text-gray-600 mb-1">Age: {user.age}</p>
 
-                    <FeedbackLabel message={deleteUserFeedbackMessage[user.id]?.message} type={deleteUserFeedbackMessage[user.id]?.type} />
+                        <FeedbackLabel 
+                          message={deleteUserFeedbackMessage[user.id]?.message} 
+                          type={deleteUserFeedbackMessage[user.id]?.type || ""} 
+                        />
 
-                    <div className="flex gap-2 mt-2">
-                      <button 
-                        onClick={() => handleOnUpdateUser(user.id)}
-                        className="px-6 py-2 text-white bg-green-600 font-semibold rounded-md cursor-pointer"
-                        >
-                        Edit
-                      </button>
-
-                      <button
-                        onClick={() => handleDeleteUser(user.id)}
-                        className="px-6 py-2 text-white bg-red-600 font-semibold rounded-md cursor-pointer"
-                        disabled={!!deleteUserFeedbackMessage[user.id]?.message}
-                        >
-                        Delete
-                      </button>
-                    </div>
-
+                        <div className="flex gap-2 mt-2">
+                          <button
+                            onClick={() => handleEditClick(user)}
+                            className="px-4 py-2 bg-green-600 text-white rounded-md"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => handleDeleteUser(user.id)}
+                            className="px-6 py-2 text-white bg-red-600 font-semibold rounded-md cursor-pointer"
+                            disabled={!!deleteUserFeedbackMessage[user.id]?.message} // disables while deleting
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </>
+                    )}
                   </div>
                 ))}
               </div>
