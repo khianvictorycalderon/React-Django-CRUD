@@ -77,29 +77,29 @@ export default function App() {
   const age = useRef<HTMLInputElement>(null);
 
   // Create User
-  const [addItemFeedback, setAddItemFeedback] = useState<FeedbackProps>({
+  const [addUserFeedback, setAddUserFeedback] = useState<FeedbackProps>({
     message: "",
     type: "success"
   });
-  const handleOnAddItem = async (e: FormEvent<HTMLFormElement>) => {
+  const handleOnAddUser = async (e: FormEvent<HTMLFormElement>) => {
     
     // Prevent refresh
     e.preventDefault();
-    setAddItemFeedback({ message: "Adding..." }); // Remove any feedback first
+    setAddUserFeedback({ message: "Adding..." }); // Remove any feedback first
 
     if (
       !first_name.current?.value ||
       !last_name.current?.value ||
       !age.current?.value
     ) {
-      setAddItemFeedback({
+      setAddUserFeedback({
         message: "Please fill all the fields!",
         type: "error"
       });
       return;
     }
 
-    // Add item logic
+    // Add user logic
     try {
 
       // Tries to send to Django Backend
@@ -109,12 +109,12 @@ export default function App() {
         age: age.current?.value 
       });
 
-      // If item was successfully added, clears input
+      // If user was successfully added, clears input
       first_name.current.value = "";
       last_name.current.value = "";
       age.current.value = "";
 
-      setAddItemFeedback({
+      setAddUserFeedback({
         message: result.data.message,
         type: "success"
       });
@@ -123,7 +123,7 @@ export default function App() {
       fetchUsers();
 
     } catch (e: unknown) {
-      setAddItemFeedback({
+      setAddUserFeedback({
         message: `${e instanceof Error ? e.message : String(e)}`,
         type: "error"
       });
@@ -172,7 +172,7 @@ export default function App() {
 
         <h2 className="font-semibold text-2xl text-center">Add Item</h2>
         
-          <form onSubmit={handleOnAddItem} className="flex flex-col gap-2 mt-4">
+          <form onSubmit={handleOnAddUser} className="flex flex-col gap-2 mt-4">
 
             <Input 
               type="text"
@@ -195,8 +195,8 @@ export default function App() {
               ref={age}
             />
 
-            <FeedbackLabel message={addItemFeedback.message} type={addItemFeedback.type} />
-            <button type="submit" className="bg-blue-600 w-full px-4 py-2 text-white rounded-md font-semibold cursor-pointer transition duration-300 hover:bg-blue-500">Add</button>
+            <FeedbackLabel message={addUserFeedback.message} type={addUserFeedback.type} />
+            <button type="submit" className="bg-blue-600 w-full px-4 py-2 text-white rounded-md font-semibold cursor-pointer transition duration-300 hover:bg-blue-500">Add User</button>
 
           </form>
 
