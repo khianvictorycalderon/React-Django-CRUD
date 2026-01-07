@@ -1,6 +1,9 @@
 // All components in this file, this is just a test project btw
 
+import axios from "axios";
 import { forwardRef, useRef, useState, type FormEvent, type HTMLInputTypeAttribute } from "react";
+
+const ENV = import.meta.env;
 
 interface InputProps {
   type?: HTMLInputTypeAttribute;
@@ -89,6 +92,13 @@ export default function App() {
 
     // Add item logic
     try {
+
+      // Tries to send to Django Backend
+      axios.post(`${ENV.VITE_API_URL}/api/user`, { 
+        first_name, 
+        last_name,
+        age 
+      });
 
       // If item was successfully added, clears input
       first_name.current.value = "";
