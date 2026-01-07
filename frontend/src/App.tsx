@@ -257,7 +257,7 @@ export default function App() {
 
           </form>
 
-          <div className="mt-10">
+          <div className="mt-10 max-w-7xl">
             <h2 className="text-2xl font-semibold mb-6 text-center">All Users</h2>
 
             <FeedbackLabel message={fetchUsersFeedback.message} type={fetchUsersFeedback.type} />
