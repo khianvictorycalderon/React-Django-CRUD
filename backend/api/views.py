@@ -52,4 +52,8 @@ def user(request):
 @csrf_exempt
 def users_list(request):
     if request.method == "GET":
-        pass
+        users = User.objects.all.values("id", "first_name", "last_name", "age")
+        return JsonResponse(list(users), safe = False)
+    return JsonResponse({ 
+        "message": "Method not allowed"
+    }, status = 405)
