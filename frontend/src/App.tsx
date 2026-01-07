@@ -118,6 +118,10 @@ export default function App() {
         message: result.data.message,
         type: "success"
       });
+
+      // Re-fetch all users
+      fetchUsers();
+
     } catch (e: unknown) {
       setAddItemFeedback({
         message: `${e instanceof Error ? e.message : String(e)}`,
