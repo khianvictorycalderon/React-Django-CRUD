@@ -205,7 +205,7 @@ export default function App() {
     setDeleteUserFeedbackMessage(prev => ({ ...prev, [id]: { message: "Deleting..." } }));
 
     try {
-      await axios.delete(`${ENV.VITE_API_URL}/api/user/${id}/delete`);
+      await axios.delete(`${ENV.VITE_API_URL}/api/user/${id}/delete/`);
 
       setDeleteUserFeedbackMessage(prev => ({ ...prev, [id]: { message: "" } }));
 
