@@ -58,6 +58,7 @@ A simple CRUD application demonstrating how to connect a React frontend with a D
 ---
 
 ## Frontend Prerequisites:
+Install the following first if you haven't installed it yet:
 - NodeJS
 - `npm`
 - `npm install tailwindcss @tailwindcss/vite`
