@@ -1,6 +1,6 @@
 // All components in this file, this is just a test project btw
 
-import { forwardRef, useRef, type HTMLInputTypeAttribute } from "react";
+import { forwardRef, useRef, useState, type FormEvent, type HTMLInputTypeAttribute } from "react";
 
 interface InputProps {
   type?: HTMLInputTypeAttribute;
@@ -43,6 +43,38 @@ export default function App() {
   const last_name = useRef<HTMLInputElement>(null);
   const age = useRef<HTMLInputElement>(null);
 
+  const [addItemErrorMessage, setAddItemErrorMessage] = useState<string>("");
+
+  const handleOnAddItem = (e: FormEvent<HTMLFormElement>) => {
+    
+    // Prevent refresh
+    e.preventDefault();
+
+    if (
+      !first_name.current?.value ||
+      !last_name.current?.value ||
+      !age.current?.value
+    ) {
+      alert("Please fill all the fields!");
+      return;
+    }
+
+    // Add item logic
+    try {
+
+      // If item was successfully added, clears input
+      first_name.current.value = "";
+      last_name.current.value = "";
+      age.current.value = "";
+
+      alert("Successfully added!");
+
+    } catch (e: unknown) {
+
+    }
+
+  }
+  
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 py-32">
       
@@ -52,24 +84,27 @@ export default function App() {
 
         <h2 className="font-semibold text-2xl text-center">Add Item</h2>
         
-          <form className="flex flex-col gap-2 mt-4">
+          <form onSubmit={handleOnAddItem} className="flex flex-col gap-2 mt-4">
 
             <Input 
               type="text"
               label="First Name"
               id="first-name-add-input"
+              ref={first_name}
             />
 
             <Input 
               type="text"
               label="Last Name"
               id="last-name-add-input"
+              ref={last_name}
             />
 
             <Input 
               type="number"
               label="Age"
               id="last-name-add-input"
+              ref={age}
             />
 
             <button type="submit" className="bg-blue-600 w-full px-4 py-2 text-white rounded-md font-semibold cursor-pointer transition duration-300 hover:bg-blue-500">Add</button>
