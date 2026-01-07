@@ -120,7 +120,7 @@ export default function App() {
       });
 
       // Re-fetch all users
-      fetchUsers();
+      await fetchUsers();
 
     } catch (e: unknown) {
       setAddUserFeedback({
@@ -162,6 +162,33 @@ export default function App() {
   useEffect(() => {
     fetchUsers();
   },[]);
+
+  // Update user
+  const handleOnUpdateUser = async(_id: string | number) => {
+
+  }
+
+  // Delete user
+  const [deleteUserFeedbackMessage, setDeleteUserFeedbackMessage] = useState<Record<number, FeedbackProps>>({});
+  const handleDeleteUser = async(id: string | number) => {
+
+    setDeleteUserFeedbackMessage(prev => ({ ...prev, [id]: { message: "Deleting..." } }));
+
+    try {
+      await axios.delete(`${ENV.VITE_API_URL}/api/user/${id}`);
+
+      setDeleteUserFeedbackMessage(prev => ({ ...prev, [id]: { message: "" } }));
+
+      await fetchUsers();
+
+    } catch (e: unknown) {
+      setDeleteUserFeedbackMessage(prev => ({
+        ...prev,
+        [id]: { message: `${e instanceof Error ? e.message : String(e)}`, type: "error" }
+      }));
+    }
+
+  }
   
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 py-32">
@@ -218,7 +245,26 @@ export default function App() {
                       {user.first_name} {user.last_name}
                     </h3>
                     <p className="text-gray-600 mb-1">Age: {user.age}</p>
-                    <p className="text-gray-400 text-sm">ID: {user.id}</p>
+
+                    <FeedbackLabel message={deleteUserFeedbackMessage[user.id]?.message} type={deleteUserFeedbackMessage[user.id]?.type} />
+
+                    <div className="flex gap-2 mt-2">
+                      <button 
+                        onClick={() => handleOnUpdateUser(user.id)}
+                        className="px-6 py-2 text-white bg-green-600 font-semibold rounded-md cursor-pointer"
+                        >
+                        Edit
+                      </button>
+
+                      <button
+                        onClick={() => handleDeleteUser(user.id)}
+                        className="px-6 py-2 text-white bg-red-600 font-semibold rounded-md cursor-pointer"
+                        disabled={!!deleteUserFeedbackMessage[user.id]?.message}
+                        >
+                        Delete
+                      </button>
+                    </div>
+
                   </div>
                 ))}
               </div>
