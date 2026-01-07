@@ -1,8 +1,12 @@
 import json
 from django.http import JsonResponse
+from django.shortcuts import HttpResponse
 
 # Create your views here.
 def demo(request):
+    return HttpResponse("Your API is working!")
+
+def user(request):
 
     if request.method == "POST":
 
