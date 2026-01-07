@@ -42,7 +42,7 @@ def user(request):
             }, status = 500)
 
         return JsonResponse({
-            "message": "Successfully added!"
+            "message": "Successfully added user!"
         }, status = 200)
     
     return JsonResponse({ 

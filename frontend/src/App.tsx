@@ -95,7 +95,7 @@ export default function App() {
     try {
 
       // Tries to send to Django Backend
-      await axios.post(`${ENV.VITE_API_URL}/api/user/`, { 
+      const result = await axios.post(`${ENV.VITE_API_URL}/api/user/`, { 
         first_name: first_name.current?.value, 
         last_name: last_name.current?.value,
         age: age.current?.value 
@@ -107,7 +107,7 @@ export default function App() {
       age.current.value = "";
 
       setAddItemFeedback({
-        message: "Successfully added!",
+        message: result.data.message,
         type: "success"
       });
     } catch (e: unknown) {
