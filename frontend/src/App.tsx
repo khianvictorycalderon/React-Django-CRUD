@@ -42,12 +42,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
 interface FeedbackProps {
   message: string;
-  type?: "success" | "warning" | "error";
+  type?: "success" | "warning" | "error" | "";
 }
 
-const FeedbackLabel: React.FC<FeedbackProps> = ({ message, type = "success"}) => {
+const FeedbackLabel: React.FC<FeedbackProps> = ({ message, type = ""}) => {
   
   const messageTypes = {
+    "": "text-black",
     success: "text-green-600",
     warning: "text-yellow-600",
     error: "text-red-400"
@@ -56,7 +57,7 @@ const FeedbackLabel: React.FC<FeedbackProps> = ({ message, type = "success"}) =>
   if (!message) return null;
 
   return (
-    <p className={`${messageTypes[type] || "text-black"} text-center font-semibold`}>
+    <p className={`${messageTypes[type]} text-center font-semibold`}>
       {message}
     </p>
   );
@@ -106,7 +107,8 @@ export default function App() {
       age.current.value = "";
 
       setAddItemFeedback({
-        message: "Successfully added!"
+        message: "Successfully added!",
+        type: "success"
       });
     } catch (e: unknown) {
       setAddItemFeedback({
