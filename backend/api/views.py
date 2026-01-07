@@ -48,3 +48,8 @@ def user(request):
     return JsonResponse({ 
         "message": "Method not allowed"
     }, status = 405)
+
+@csrf_exempt
+def users_list(request):
+    if request.method == "GET":
+        pass
