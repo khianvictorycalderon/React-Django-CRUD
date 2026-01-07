@@ -57,3 +57,21 @@ def users_list(request):
     return JsonResponse({ 
         "message": "Method not allowed"
     }, status = 405)
+
+@csrf_exempt
+def user_delete(request, user_id: int):
+    if request.method == "DELETE":
+        try:
+            user = User.objects.get(id=user_id)
+            user.delete()
+            return JsonResponse({
+                "message": "User deleted successfully."
+            }, status = 200)
+        except User.DoesNotExist:
+            return JsonResponse({
+                "message": "User not found."
+            }, status=404)
+    
+    return JsonResponse({
+        "message": "Method not allowed"
+    }, status=405)
