@@ -37,12 +37,38 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
   }
 );
 
+interface FeedbackProps {
+  message: string;
+  type?: "success" | "warning" | "error";
+}
+
+const FeedbackLabel: React.FC<FeedbackProps> = ({ message, type = "success"}) => {
+  
+  const messageTypes = {
+    success: "text-green-600",
+    warning: "text-yellow-600",
+    error: "text-red-400"
+  } as const;
+  
+  if (!message) return null;
+
+  return (
+    <p className={`${messageTypes[type]} text-center font-semibold`}>
+      {message}
+    </p>
+  );
+}
+
 export default function App() {
 
   const first_name = useRef<HTMLInputElement>(null);
   const last_name = useRef<HTMLInputElement>(null);
   const age = useRef<HTMLInputElement>(null);
 
+  const [addItemFeedback, setAddItemFeedback] = useState<FeedbackProps>({
+    message: "",
+    type: "success"
+  })
   const handleOnAddItem = (e: FormEvent<HTMLFormElement>) => {
     
     // Prevent refresh
@@ -53,7 +79,10 @@ export default function App() {
       !last_name.current?.value ||
       !age.current?.value
     ) {
-      alert("Please fill all the fields!");
+      setAddItemFeedback({
+        message: "Please fill all the fields!",
+        type: "error"
+      });
       return;
     }
 
@@ -65,10 +94,14 @@ export default function App() {
       last_name.current.value = "";
       age.current.value = "";
 
-      alert("Successfully added!");
-
+      setAddItemFeedback({
+        message: "Successfully added!"
+      });
     } catch (e: unknown) {
-      
+      setAddItemFeedback({
+        message: `${e instanceof Error ? e.message : String(e)}`,
+        type: "error"
+      });
     }
 
   }
@@ -105,6 +138,7 @@ export default function App() {
               ref={age}
             />
 
+            <FeedbackLabel message={addItemFeedback.message} type={addItemFeedback.type} />
             <button type="submit" className="bg-blue-600 w-full px-4 py-2 text-white rounded-md font-semibold cursor-pointer transition duration-300 hover:bg-blue-500">Add</button>
 
           </form>
