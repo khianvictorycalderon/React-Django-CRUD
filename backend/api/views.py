@@ -2,6 +2,7 @@ import json
 from django.http import JsonResponse
 from django.shortcuts import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from .models import User
 
 # Create your views here.
 def demo(request):
@@ -24,10 +25,21 @@ def user(request):
         last_name = data.get("last_name")
         age = data.get("age")
 
-        print("Received data:")
-        print("First Name:", first_name)
-        print("Last Name:", last_name)
-        print("Age:", age)
+        # Field validation
+        if not first_name or not last_name or not age:
+            return JsonResponse({"message": "Missing fields"}, status=400)
+        
+        # Save to database
+        try:
+            User.objects.create(
+                first_name = first_name,
+                last_name = last_name,
+                age = age
+            )
+        except Exception as e:
+            return JsonResponse({
+                "message": f"Error adding new user: {str(e)}"
+            }, status = 500)
 
         return JsonResponse({
             "message": "Successfully added!"
