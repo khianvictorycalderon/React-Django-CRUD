@@ -52,7 +52,7 @@ A simple CRUD application demonstrating how to connect a React frontend with a D
 1. Run `npm install`
 2. Create an `.env` file that contains:
   ```env
-  API_URL=<your-api-here>
+  VITE_API_URL=<your-api-here>
   ```
   Then change the `API_URL` depending on where you run the backend.
 3. Run `npm run dev`
